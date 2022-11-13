@@ -1,0 +1,2 @@
+class Municipality:
+    pass
