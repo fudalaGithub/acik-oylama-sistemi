@@ -1,1 +1,1 @@
-# acik-oylama-sistemi
+# Açık Kaynak Oylama Sistemi.
