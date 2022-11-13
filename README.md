@@ -1,0 +1,1 @@
+# acik-oylama-sistemi
