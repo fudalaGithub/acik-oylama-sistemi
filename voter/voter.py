@@ -17,8 +17,6 @@ class Voter(MDApp, Screen):
         screen_manager.add_widget(LoadScreen(name="LoadScreen"))
         screen_manager.add_widget(MainScreen(name="MainScreen"))
         
-        self._check_keys()
-        
         return screen_manager
 
     def on_start(self):
