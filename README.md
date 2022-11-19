@@ -14,5 +14,3 @@ Sistemin oy veren (Voter) tarafında, kullanıcı bilgilerini korumak için hash
 
 Vatandaş, yasal oy kullanma yaşına ulaştığında, diğerleri gibi, hash kodunu veri tabanına ekletmelidir. TC vatandaşı olmayan kişilerin oy kullanmasını engellemek için, vatandaşlar bulundukları yerleşim yerlerinin büyük şehir belediyelerine gidip, veri tabanına kayıt olmalıdırlar. Her seçimde oy sandıklarına gidip gelme zahmeti bu sayede tek seferlik bir kayıt ile bitmiş olur.
 
-
-
