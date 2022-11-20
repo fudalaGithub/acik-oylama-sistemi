@@ -1,5 +1,4 @@
 import os
-import time
 from kivy.clock import Clock
 from kivy.core.window import Window
 from kivy.uix.screenmanager import ScreenManager, Screen
@@ -16,6 +15,7 @@ class Voter(MDApp, Screen):
         self.window_settings()
         screen_manager.add_widget(LoadScreen(name="LoadScreen"))
         screen_manager.add_widget(MainScreen(name="MainScreen"))
+        
         
         return screen_manager
 
