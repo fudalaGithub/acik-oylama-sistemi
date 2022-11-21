@@ -43,9 +43,9 @@ class Voter(MDApp, Screen):
         
     def _check_keys(self) -> bool:
         private_key = os.getcwd() + "/voter/keys/private_key.aos"
-        public_key = os.getcwd() + "/voter/keys/private_key.aos"
+        public_key = os.getcwd() + "/voter/keys/public_key.aos"
         
-        if os.path.exists(private_key) or os.path.exists(public_key):
+        if os.path.exists(private_key) and os.path.exists(public_key):
             return True
         else:
             return False

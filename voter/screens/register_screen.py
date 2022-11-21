@@ -1,6 +1,8 @@
 from kivy.lang import Builder
 from kivymd.toast import toast
 from kivy.uix.screenmanager import Screen
+from cryptographer.cryptographer import Cryptographer
+
 
 screen_str = """
 <RegisterScreen>
@@ -56,35 +58,53 @@ class RegisterScreen(Screen):
     
 
     def _anahtar_olustur_btn(self):
+        
         if self.__input_control():
-            print(".....")
+            inputs_list = self.__get_inputs_in_list()
+            a = self.__convert_list_to_string(inputs_list)
+            private_key = Cryptographer().do_Hash256(a)
+            public_key = Cryptographer().do_Hash256(private_key)
+            Cryptographer().save_private_key(private_key)
+            Cryptographer().save_public_key(public_key)
+            
 
-        
-        
     def __input_control(self) -> bool:  
-        isim = self.ids.isim_text_field.text
-        soyisim = self.ids.soyisim_text_field.text
-        sifre = self.ids.sifre_text_field.text
-        tekrar_sifre = self.ids.tekrar_sifre_text_field.text
         
-        if not isim:
+        input_list = self.__get_inputs_in_list()
+        
+        if not input_list[0]:
             toast('Lütfen isim giriniz')
         else:
-            if not soyisim:
+            if not input_list[1]:
                 toast('Lütfen soyisim giriniz')
             else:
-                if not sifre:
+                if not input_list[2]:
                     toast('Lütfen şifre giriniz')
                 else:
-                    if not tekrar_sifre:
+                    if not input_list[3]:
                         toast('Lütfen tekrar şifre giriniz')
                     else:
-                        if sifre == tekrar_sifre:
+                        if input_list[2] == input_list[3]:
                             return True
                         else:
-                            toast("Şifreler eşleşmiyor")
+                            toast("Şifreler eşleşmiyor, lütfen tekrar girin")
                         
         return False
+    
+    def __get_inputs_in_list(self) -> list:
+            inputs_list = []
+            inputs_list.append(self.ids.isim_text_field.text)
+            inputs_list.append(self.ids.soyisim_text_field.text)
+            inputs_list.append(self.ids.sifre_text_field.text)
+            inputs_list.append(self.ids.tekrar_sifre_text_field.text)
+            
+            return inputs_list
+        
+    def __convert_list_to_string(self, list) -> str:
+        converted_list = ' '.join(list)
+        return converted_list
+    
+    
 
 
 
