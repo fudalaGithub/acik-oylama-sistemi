@@ -3,7 +3,6 @@ from kivymd.toast import toast
 from kivy.uix.screenmanager import ScreenManager
 from kivy.uix.screenmanager import Screen
 from cryptographerAos.cryptographerAos import CryptographerAos
-from voter import Voter
 
 screen_str = """
 <RegisterScreen>
@@ -49,7 +48,7 @@ screen_str = """
                 pos_hint: {"center_x": 0.5}
                 md_bg_color: "red"
                 on_press: root._anahtar_olustur_btn()
-                on_release: root.manager.current = "MainScreen"
+
 
 
 """
@@ -57,11 +56,6 @@ screen_str = """
 
 class RegisterScreen(Screen):
     Builder.load_string(screen_str)
-    global sm
-    sm = ScreenManager()
-    
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
 
     def _anahtar_olustur_btn(self):
 
@@ -75,8 +69,8 @@ class RegisterScreen(Screen):
             CryptographerAos().save_private_key(private_key)
             CryptographerAos().save_public_key(public_key)
             CryptographerAos().save_password(CryptographerAos().do_Hash256(password))  # Şifre doğrudan kaydedilmemeli
-
-
+            toast('Anahtar Oluşturuldu')
+            self.parent.current = "MainScreen"
 
 
     def __input_control(self) -> bool:
@@ -114,8 +108,3 @@ class RegisterScreen(Screen):
     def __convert_list_to_string(self, list) -> str:
         converted_list = ' '.join(list)
         return converted_list
-
-    def change_screen(self, screen):
-        # the same as in .kv: app.root.current = screen
-        self.current = screen
-        print("Cliked")
