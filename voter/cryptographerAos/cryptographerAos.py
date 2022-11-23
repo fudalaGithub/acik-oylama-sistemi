@@ -39,7 +39,7 @@ class CryptographerAos():
     def encrypt(self, chunkParam, passwordParam):
         key = self.deriveKey(passwordParam)
         fernet = Fernet(key)
-        encryptedChunk = fernet.encrypt(bytes(chunkParam, 'utf-8'))  # Chunk yığın demek, string yerine bu chunk
+        encryptedChunk = fernet.encrypt(bytes(chunkParam, 'utf-8'))
         return encryptedChunk.decode()
 
     def decrypt(self, chunkParam, passwordParam):
