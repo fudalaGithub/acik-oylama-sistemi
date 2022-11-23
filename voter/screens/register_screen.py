@@ -1,6 +1,5 @@
 from kivy.lang import Builder
 from kivymd.toast import toast
-from kivy.uix.screenmanager import ScreenManager
 from kivy.uix.screenmanager import Screen
 from cryptographerAos.cryptographerAos import CryptographerAos
 
@@ -71,7 +70,6 @@ class RegisterScreen(Screen):
             CryptographerAos().save_password(CryptographerAos().do_Hash256(password))  # Şifre doğrudan kaydedilmemeli
             toast('Anahtar Oluşturuldu')
             self.parent.current = "MainScreen"
-
 
     def __input_control(self) -> bool:
 
