@@ -25,7 +25,6 @@ class Voter(MDApp, Screen):
             Clock.schedule_once(self.change_screen_to_register, 3)
 
     def change_screen_to_main(self, dt):
-        screen_manager.add_widget(MainScreen(name="MainScreen"))
         screen_manager.current = "MainScreen"
 
     def change_screen_to_register(self, dt):

@@ -62,10 +62,13 @@ class RegisterScreen(Screen):
             inputs_list = self.__get_inputs_in_list()
             del inputs_list[-1::]
             key_string = self.__convert_list_to_string(inputs_list)
-            private_key = CryptographerAos().do_Hash256(key_string)
-            public_key = CryptographerAos().do_Hash256(private_key)
             password = self.__convert_list_to_string(inputs_list[-1:])
-            CryptographerAos().save_private_key(private_key)
+            # private_key'in cihazda doğrudan saklanması güvenli değil
+            # kullanıcının girdiği şifre ile şifrelenmeli
+            private_key = CryptographerAos().do_Hash256(key_string)
+            private_key_crypted = CryptographerAos().encrypt(private_key, password)
+            public_key = CryptographerAos().do_Hash256(private_key)
+            CryptographerAos().save_private_key(private_key_crypted)
             CryptographerAos().save_public_key(public_key)
             CryptographerAos().save_password(CryptographerAos().do_Hash256(password))  # Şifre doğrudan kaydedilmemeli
             toast('Anahtar Oluşturuldu')
