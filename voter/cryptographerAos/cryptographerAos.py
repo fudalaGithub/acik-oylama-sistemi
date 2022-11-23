@@ -1,9 +1,7 @@
 import base64
 import hashlib
 import os
-
-import self
-from cryptography.hazmat.primitives.kdf.scrypt import Scrypt # pip install cryptography
+from cryptography.hazmat.primitives.kdf.scrypt import Scrypt  # pip install cryptography
 from cryptography.hazmat.backends import default_backend
 from cryptography.fernet import Fernet
 
@@ -22,20 +20,18 @@ class CryptographerAos():
         except:
             print("Dosya yolu hatası. Çözüm; private_key = os.getcwd() voter/keys/private_key.aos olabilir")
 
-
-
     def save_public_key(self, key):
         try:
             public_key = os.getcwd() + "/keys/public_key.aos"
-            with open(public_key, "w",encoding = "utf-8") as key_file:
+            with open(public_key, "w", encoding="utf-8") as key_file:
                 key_file.write(key)
         except:
             print("Dosya yolu hatası.")
-            
+
     def save_password(self, voter_password):
         try:
             password = os.getcwd() + "/keys/password.aos"
-            with open(password, "w",encoding = "utf-8") as password_file:
+            with open(password, "w", encoding="utf-8") as password_file:
                 password_file.write(voter_password)
         except:
             print("Dosya yolu hatası.")
@@ -49,16 +45,14 @@ class CryptographerAos():
     def decrypt(self, chunkParam, passwordParam):
         key = self.deriveKey(passwordParam)
         fernet = Fernet(key)
-        decryptedChunk = fernet.decrypt(chunkParam)  # Chunk yığın demek, string yerine bu chunk
+        decryptedChunk = fernet.decrypt(chunkParam)
         return decryptedChunk.decode()
 
     def deriveKey(self, passwordParam):
         if type(passwordParam) == str:
             passwordParam = passwordParam.encode("utf-8")
         keyDerivationFunction = Scrypt(
-            # bu *salt* çok önemli hep aynı parolayı oluşturması için 16 bytelik statik değer lazım
-            # eğer sabit değer olmazsa hep değişik key oluşturamış ve decrypt yapakan şifre gırılmazmış
-            salt=b'ABCDEFGHIJKLMNOP',  # Bu da aslında parola ile eşleşen ikinci parola
+            salt=b'ABCDEFGHIJKLMNOP',
             length=32,
             n=2 ** 14,
             r=8,
@@ -66,17 +60,9 @@ class CryptographerAos():
             backend=default_backend()
         )
         deriveKey = keyDerivationFunction.derive(passwordParam)
-        key = base64.urlsafe_b64encode(deriveKey)  # Fernet() oluşturulan key'i base64 olarak istediği için
-        # urlsafe_b64encodeb64encode() +'yı -'e ve /'u _'e dönüştürür Fernet'te problem olmasın diye
+        key = base64.urlsafe_b64encode(deriveKey)
         return key
-
-    # a = DeriveKey("Merhaba1122")
-    # print("Key : ", a)
-
 
 
 if __name__ == "__main__":
     print(CryptographerAos().do_Hash256("Fudala'ya el ver."))
-
-
-
