@@ -1,8 +1,9 @@
 from kivy.lang import Builder
 from kivymd.toast import toast
+from kivy.uix.screenmanager import ScreenManager
 from kivy.uix.screenmanager import Screen
-from cryptographer.cryptographer import Cryptographer
-
+from cryptographerAos.cryptographerAos import CryptographerAos
+from voter import Voter
 
 screen_str = """
 <RegisterScreen>
@@ -48,6 +49,7 @@ screen_str = """
                 pos_hint: {"center_x": 0.5}
                 md_bg_color: "red"
                 on_press: root._anahtar_olustur_btn()
+                on_release: root.manager.current = "MainScreen"
 
 
 """
@@ -55,23 +57,32 @@ screen_str = """
 
 class RegisterScreen(Screen):
     Builder.load_string(screen_str)
+    global sm
+    sm = ScreenManager()
     
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
 
     def _anahtar_olustur_btn(self):
-        
+
         if self.__input_control():
             inputs_list = self.__get_inputs_in_list()
-            a = self.__convert_list_to_string(inputs_list)
-            private_key = Cryptographer().do_Hash256(a)
-            public_key = Cryptographer().do_Hash256(private_key)
-            Cryptographer().save_private_key(private_key)
-            Cryptographer().save_public_key(public_key)
-            
+            del inputs_list[-1::]
+            key_string = self.__convert_list_to_string(inputs_list)
+            private_key = CryptographerAos().do_Hash256(key_string)
+            public_key = CryptographerAos().do_Hash256(private_key)
+            password = self.__convert_list_to_string(inputs_list[-1:])
+            CryptographerAos().save_private_key(private_key)
+            CryptographerAos().save_public_key(public_key)
+            CryptographerAos().save_password(CryptographerAos().do_Hash256(password))  # Şifre doğrudan kaydedilmemeli
 
-    def __input_control(self) -> bool:  
-        
+
+
+
+    def __input_control(self) -> bool:
+
         input_list = self.__get_inputs_in_list()
-        
+
         if not input_list[0]:
             toast('Lütfen isim giriniz')
         else:
@@ -88,24 +99,23 @@ class RegisterScreen(Screen):
                             return True
                         else:
                             toast("Şifreler eşleşmiyor, lütfen tekrar girin")
-                        
+
         return False
-    
+
     def __get_inputs_in_list(self) -> list:
-            inputs_list = []
-            inputs_list.append(self.ids.isim_text_field.text)
-            inputs_list.append(self.ids.soyisim_text_field.text)
-            inputs_list.append(self.ids.sifre_text_field.text)
-            inputs_list.append(self.ids.tekrar_sifre_text_field.text)
-            
-            return inputs_list
-        
+        inputs_list = []
+        inputs_list.append(self.ids.isim_text_field.text)
+        inputs_list.append(self.ids.soyisim_text_field.text)
+        inputs_list.append(self.ids.sifre_text_field.text)
+        inputs_list.append(self.ids.tekrar_sifre_text_field.text)
+
+        return inputs_list
+
     def __convert_list_to_string(self, list) -> str:
         converted_list = ' '.join(list)
         return converted_list
-    
-    
 
-
-
-
+    def change_screen(self, screen):
+        # the same as in .kv: app.root.current = screen
+        self.current = screen
+        print("Cliked")
