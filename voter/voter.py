@@ -5,6 +5,7 @@ from kivy.uix.screenmanager import ScreenManager, Screen
 from kivymd.app import MDApp
 from screens.load_screen import LoadScreen
 from screens.main_screen import MainScreen
+from screens.login_screen import LoginScreen
 
 
 class Voter(MDApp, Screen):
@@ -14,18 +15,22 @@ class Voter(MDApp, Screen):
     def build(self):
         self.window_settings()
         screen_manager.add_widget(LoadScreen(name="LoadScreen"))
+        screen_manager.add_widget(LoginScreen(name="LoginScreen"))
         screen_manager.add_widget(MainScreen(name="MainScreen"))
 
         return screen_manager
 
     def on_start(self):
         if self._check_keys():
-            Clock.schedule_once(self.change_screen_to_main, 3)
+            Clock.schedule_once(self.change_screen_to_login, 3)
         else:
             Clock.schedule_once(self.change_screen_to_register, 3)
 
     def change_screen_to_main(self, dt):
         screen_manager.current = "MainScreen"
+
+    def change_screen_to_login(self, dt):
+        screen_manager.current = "LoginScreen"
 
     def change_screen_to_register(self, dt):
         from screens.register_screen import RegisterScreen
