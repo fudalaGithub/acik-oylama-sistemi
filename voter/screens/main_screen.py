@@ -5,7 +5,6 @@ from kivy.uix.screenmanager import Screen
 screen_str = """
 <MainScreen>
     MDScreen:
-        id: MainScreen
         name: "MainScreen"
         
         FloatLayout:
